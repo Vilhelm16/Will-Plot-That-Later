@@ -11,4 +11,17 @@ To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
 
 ```{r}
 1 + 1
+
+
+a <- c(1, 2, 3)
+
+b <- c(2, 4, 6)
+
+df <- data.frame(a, b)
+
+library(ggplot2)
+
+ggplot(df, aes(x = a, y = b)) + geom_point() + geom_line()
+
+
 ```
