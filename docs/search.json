@@ -2,9 +2,9 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "vh-site-master",
+    "title": "Will Plot That Later",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\n1 + 1\n\n[1] 2\n\na &lt;- c(1, 2, 3)\n\nb &lt;- c(2, 4, 6)\n\ndf &lt;- data.frame(a, b)\n\nlibrary(ggplot2)\n\nWarning: package 'ggplot2' was built under R version 4.3.3\n\nggplot(df, aes(x = a, y = b)) + geom_point() + geom_line()"
+    "text": "Welcome! I’m Will. I’ll plot that later.\n\n1 + 1\n\n[1] 2\n\na &lt;- c(1, 2, 3)\n\nb &lt;- c(2, 4, 6)\n\ndf &lt;- data.frame(a, b)\n\nlibrary(ggplot2)\n\nWarning: package 'ggplot2' was built under R version 4.3.3\n\nggplot(df, aes(x = a, y = b)) + geom_point() + geom_line()"
   },
   {
     "objectID": "about.html",

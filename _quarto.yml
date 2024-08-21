@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "vh-site-master"
+  title: "Will Plot That Later"
   navbar:
     left:
       - href: index.qmd
@@ -12,7 +12,7 @@ website:
 
 format:
   html:
-    theme: cosmo
+    theme: lux
     css: styles.css
     toc: true
 
