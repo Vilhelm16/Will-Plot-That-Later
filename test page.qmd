@@ -1,12 +1,10 @@
 ---
 title: "Mapping Metrolinx's Shapfiles to Create a New Transit Map"
-editor: visual
 format:
   html:
     code-fold: true
     code-summary: "Code"
 ---
-
 
 ```{r, global_options, include=FALSE}
 knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
