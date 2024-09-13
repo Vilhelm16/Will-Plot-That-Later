@@ -1,0 +1,127 @@
+---
+title: "Mapping Metrolinx's Shapfiles to Create a New Transit Map"
+editor: visual
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+---
+
+
+```{r, global_options, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+### Introduction
+
+Shapefiles are files that provide geospatial information. They generally come in folders with multiple files with multiple file extensions (IE, .shp and .sbx). When opened in R, they can be treatedm and manipulated like dataframes (the R version of a spreadsheet), but can also be easily used for mapping data.
+
+This document provides instructions on how to handle, manipulate, and map shapefiles. We will be using the shapefiles that Metrolinx provides publicly on their website, and creating various maps of the transit system.
+
+### Instructions
+
+First, we load our packages. Here, we are using sf for handling our shapefiles, dplyr for processing data, and ggplot2 for plotting. You will need to install the packages if you don't have them. To do so, use install.packages("package"), replacing "package" with the name of the package you want.
+
+```{r, message=FALSE, warning=FALSE}
+
+library(sf)
+library(dplyr)
+library(ggplot2)
+
+```
+
+This next block of code loads in shapefiles from Metrolinx on all of the lines and stations in the network (these are two different files). You will need to change the file location to wherever your shapefiles are. These files are in the shared drive, so they should work for you if you have access to this folder. Load the files in using read_sf(), a function of the sf package. Note that shapefiles are a collection of files with different endings all in the same folder. You only need to point R to the one that ends in .shp and it will take care of the rest. 
+
+These file location names are too long to view in this pdf document. In order to access them, you may need to open the associated .rmd file in the share drive.
+
+Also note that R (like many programming languages) uses a forward slash (/) instead of a back slash for file location, the opposite from what copying in Windows will get you.
+
+
+```{r}
+line_sf <- read_sf("C:/Users/willi/Downloads/GIS_Data_-_Future_Transit_Network_-_2023-05-12/RTP_TRANSIT_NETWORK.shp")
+point_sf <- read_sf("C:/Users/willi/Downloads/GIS_Data_-_Future_Transit_Network_-_2023-05-12/RTP_POINTS.shp")
+```
+
+This data currently has every single current proposed transit project, including lots of BRTs. Let's filter this so it mirrors Ontario's priority transit projects. We can filter things out before graphing to make different graphs.
+
+First, this filter removes all GO Rail lines, but keeps all non-GO existing, proposed, advancing, and in-delivery lines.
+
+```{r}
+all_nogo <- line_sf[!grepl("GO Rail", line_sf$TECHNOLOGY), ]
+```
+
+Then, we make an incredibly simple graph of this. We see that it results in a messy network of proposed and current lines stretching from Kitchener to Hamilton to Simcoe.
+
+```{r}
+
+ggplot() + geom_sf(data = all_nogo, color = "black")
+
+```
+
+Instead, we might decide that we only want a core set of lines that exist or are in delivery. The next sets of lines of code are a way - albeit a messy and inefficient way - of going about that process.
+
+```{r}
+
+line_sf <- subset(line_sf, TECHNOLOGY == "Subway" | TECHNOLOGY == "LRT / BRT" | NAME == "Lakeshore West Line" | NAME == "Kitchener Line Two-Way All-Day"| NAME == "Kitchener Line 15-min" | NAME == "UP Express")
+line_sf <- subset(line_sf, STATUS == "Existing" | STATUS == "In Delivery" | STATUS == "Advancing")
+line_sf <- line_sf[!grepl("BRT", line_sf$NAME), ]
+line_sf <- line_sf[!grepl("Transitway", line_sf$NAME), ]
+
+unique_names <- unique(line_sf$NAME)
+point_sf <- point_sf %>%
+  filter(NAME %in% unique_names | NAME == "Lakeshore West" | NAME == "Kitchener" | NAME == "ION LRT")
+
+
+theme_set(theme_dark())
+
+
+line_sf_rapid <- subset(line_sf, !(TECHNOLOGY == 'GO Rail - All-day'))
+line_sf_rapid <- subset(line_sf_rapid, !(NAME == 'Hamilton B-Line LRT' | NAME == 'ION Kitchener-Waterloo LRT (Stage 1)' | NAME == 'Lakeshore West Line' | NAME == 'Kitchener Line 15-min' | NAME == 'Hazel McCallion Line'))
+
+unique_names_rapid <- unique(line_sf_rapid$NAME)
+point_sf_rapid <- point_sf %>%
+  filter(NAME %in% unique_names_rapid)
+
+```
+
+Here we graph this core set of lines that exist or are in delivery. In another world, we may have decided to include the Hazel McCallion line and connect it using Lakeshore West, but rather we decided to look at the primary set of lines in Toronto and wholly exclude the Go. We did, however, include the UP Express. We also decided to color the lines in accordance with the colors that are generally used when these lines are represented on a map. We have also included colors for some GO lines for use in future graphs. Note that this map also includes the stations as points.
+
+```{r}
+
+ core_toronto_map <- ggplot() + 
+  geom_sf(data = line_sf_rapid, aes(color = NAME), size = 100) + 
+  scale_color_manual(values = c("Lakeshore West Line" = "maroon",
+                                "Kitchener Line Two-Way All-Day" = "forestgreen",
+                                "Kitchener Line 15-min" = "forestgreen",
+                                "Line 1: Yonge-University Subway" = "yellow",
+                                "Line 2: Bloor-Danforth Subway" = "green",
+                                "Line 4: Sheppard Subway" = "purple",
+                                "Eglinton Crosstown LRT" = "orange",
+                                "Eglinton Crosstown West Extension" = "orange",
+                                "Hazel McCallion Line" = "lightblue",
+                                "Finch West LRT" = "blue",
+                                "Ontario Line" = "plum3",
+                                "Yonge North Subway Extension" = "yellow",
+                                "ION Kitchener-Waterloo LRT (Stage 1)" = "royalblue2",
+                                "Hamilton B-Line LRT" = "mediumturquoise",
+                                "Sheppard East Subway Extension" = "purple",
+                                "Scarborough Subway Extension" = "green",
+                                "UP Express" = "brown",
+                                "Eglinton Crosstown West Extension - Airport Segment" = "orange")) + 
+  theme(
+    panel.background = element_rect(fill = 'gray20'),
+    plot.title = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    legend.title = element_blank(),
+    plot.subtitle = element_blank(),
+    plot.caption = element_blank(), legend.position = "none",
+    panel.grid.major = element_blank(), 
+    panel.grid.minor = element_blank(), 
+  ) + 
+  geom_sf(data = point_sf_rapid, color = "white") + 
+  theme(axis.text.x = element_blank(), axis.text.y = element_blank()) 
+
+print(core_toronto_map)
+
+```

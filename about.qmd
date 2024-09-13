@@ -1,9 +1,9 @@
 ---
 title: "About"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
 ---
 
-About this site
-
-```{r}
-1 + 1
-```
+Welcome! I'm Will, a policy analyst who has an unhealthy love for data and R. This website is a place for me to put some of my personal projects and to provide explanations for how do my analysis. Hoy!

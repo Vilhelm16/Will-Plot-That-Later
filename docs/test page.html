@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Will Plot That Later – About</title>
+<title>Will Plot That Later – Mapping Metrolinx’s Shapfiles to Create a New Transit Map</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -80,7 +114,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./about.html">About</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./test page.html">Mapping Metrolinx’s Shapfiles to Create a New Transit Map</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -113,13 +147,13 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./about.html" class="sidebar-item-text sidebar-link active">
+  <a href="./about.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./test page.html" class="sidebar-item-text sidebar-link">
+  <a href="./test page.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Mapping Metrolinx’s Shapfiles to Create a New Transit Map</span></a>
   </div>
 </li>
@@ -128,15 +162,22 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#instructions" id="toc-instructions" class="nav-link" data-scroll-target="#instructions">Instructions</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Mapping Metrolinx’s Shapfiles to Create a New Transit Map</h1>
 </div>
 
 
@@ -153,9 +194,121 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Welcome! I’m Will, a policy analyst who has an unhealthy love for data and R. This website is a place for me to put some of my personal projects and to provide explanations for how do my analysis.</p>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>Shapefiles are files that provide geospatial information. They generally come in folders with multiple files with multiple file extensions (IE, .shp and .sbx). When opened in R, they can be treatedm and manipulated like dataframes (the R version of a spreadsheet), but can also be easily used for mapping data.</p>
+<p>This document provides instructions on how to handle, manipulate, and map shapefiles. We will be using the shapefiles that Metrolinx provides publicly on their website, and creating various maps of the transit system.</p>
+</section>
+<section id="instructions" class="level3">
+<h3 class="anchored" data-anchor-id="instructions">Instructions</h3>
+<p>First, we load our packages. Here, we are using sf for handling our shapefiles, dplyr for processing data, and ggplot2 for plotting. You will need to install the packages if you don’t have them. To do so, use install.packages(“package”), replacing “package” with the name of the package you want.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This next block of code loads in shapefiles from Metrolinx on all of the lines and stations in the network (these are two different files). You will need to change the file location to wherever your shapefiles are. These files are in the shared drive, so they should work for you if you have access to this folder. Load the files in using read_sf(), a function of the sf package. Note that shapefiles are a collection of files with different endings all in the same folder. You only need to point R to the one that ends in .shp and it will take care of the rest.</p>
+<p>These file location names are too long to view in this pdf document. In order to access them, you may need to open the associated .rmd file in the share drive.</p>
+<p>Also note that R (like many programming languages) uses a forward slash (/) instead of a back slash for file location, the opposite from what copying in Windows will get you.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>line_sf <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"C:/Users/willi/Downloads/GIS_Data_-_Future_Transit_Network_-_2023-05-12/RTP_TRANSIT_NETWORK.shp"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>point_sf <span class="ot">&lt;-</span> <span class="fu">read_sf</span>(<span class="st">"C:/Users/willi/Downloads/GIS_Data_-_Future_Transit_Network_-_2023-05-12/RTP_POINTS.shp"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>This data currently has every single current proposed transit project, including lots of BRTs. Let’s filter this so it mirrors Ontario’s priority transit projects. We can filter things out before graphing to make different graphs.</p>
+<p>First, this filter removes all GO Rail lines, but keeps all non-GO existing, proposed, advancing, and in-delivery lines.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>all_nogo <span class="ot">&lt;-</span> line_sf[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"GO Rail"</span>, line_sf<span class="sc">$</span>TECHNOLOGY), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Then, we make an incredibly simple graph of this. We see that it results in a messy network of proposed and current lines stretching from Kitchener to Hamilton to Simcoe.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> all_nogo, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="test-page_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Instead, we might decide that we only want a core set of lines that exist or are in delivery. The next sets of lines of code are a way - albeit a messy and inefficient way - of going about that process.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>line_sf <span class="ot">&lt;-</span> <span class="fu">subset</span>(line_sf, TECHNOLOGY <span class="sc">==</span> <span class="st">"Subway"</span> <span class="sc">|</span> TECHNOLOGY <span class="sc">==</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"LRT / BRT"</span> <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"Lakeshore West Line"</span> <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"Kitchener Line Two-Way All-Day"</span> <span class="sc">|</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    NAME <span class="sc">==</span> <span class="st">"Kitchener Line 15-min"</span> <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"UP Express"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>line_sf <span class="ot">&lt;-</span> <span class="fu">subset</span>(line_sf, STATUS <span class="sc">==</span> <span class="st">"Existing"</span> <span class="sc">|</span> STATUS <span class="sc">==</span> <span class="st">"In Delivery"</span> <span class="sc">|</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    STATUS <span class="sc">==</span> <span class="st">"Advancing"</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>line_sf <span class="ot">&lt;-</span> line_sf[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"BRT"</span>, line_sf<span class="sc">$</span>NAME), ]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>line_sf <span class="ot">&lt;-</span> line_sf[<span class="sc">!</span><span class="fu">grepl</span>(<span class="st">"Transitway"</span>, line_sf<span class="sc">$</span>NAME), ]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>unique_names <span class="ot">&lt;-</span> <span class="fu">unique</span>(line_sf<span class="sc">$</span>NAME)</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>point_sf <span class="ot">&lt;-</span> point_sf <span class="sc">%&gt;%</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(NAME <span class="sc">%in%</span> unique_names <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"Lakeshore West"</span> <span class="sc">|</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>        NAME <span class="sc">==</span> <span class="st">"Kitchener"</span> <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"ION LRT"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_dark</span>())</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>line_sf_rapid <span class="ot">&lt;-</span> <span class="fu">subset</span>(line_sf, <span class="sc">!</span>(TECHNOLOGY <span class="sc">==</span> <span class="st">"GO Rail - All-day"</span>))</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>line_sf_rapid <span class="ot">&lt;-</span> <span class="fu">subset</span>(line_sf_rapid, <span class="sc">!</span>(NAME <span class="sc">==</span> <span class="st">"Hamilton B-Line LRT"</span> <span class="sc">|</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    NAME <span class="sc">==</span> <span class="st">"ION Kitchener-Waterloo LRT (Stage 1)"</span> <span class="sc">|</span> NAME <span class="sc">==</span></span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Lakeshore West Line"</span> <span class="sc">|</span> NAME <span class="sc">==</span> <span class="st">"Kitchener Line 15-min"</span> <span class="sc">|</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    NAME <span class="sc">==</span> <span class="st">"Hazel McCallion Line"</span>))</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>unique_names_rapid <span class="ot">&lt;-</span> <span class="fu">unique</span>(line_sf_rapid<span class="sc">$</span>NAME)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>point_sf_rapid <span class="ot">&lt;-</span> point_sf <span class="sc">%&gt;%</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(NAME <span class="sc">%in%</span> unique_names_rapid)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Here we graph this core set of lines that exist or are in delivery. In another world, we may have decided to include the Hazel McCallion line and connect it using Lakeshore West, but rather we decided to look at the primary set of lines in Toronto and wholly exclude the Go. We did, however, include the UP Express. We also decided to color the lines in accordance with the colors that are generally used when these lines are represented on a map. We have also included colors for some GO lines for use in future graphs. Note that this map also includes the stations as points.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>core_toronto_map <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> line_sf_rapid,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">color =</span> NAME), <span class="at">size =</span> <span class="dv">100</span>) <span class="sc">+</span> <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">Lakeshore West Line</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"maroon"</span>,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Kitchener Line Two-Way All-Day</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>, <span class="st">`</span><span class="at">Kitchener Line 15-min</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"forestgreen"</span>,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Line 1: Yonge-University Subway</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"yellow"</span>, <span class="st">`</span><span class="at">Line 2: Bloor-Danforth Subway</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"green"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Line 4: Sheppard Subway</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"purple"</span>, <span class="st">`</span><span class="at">Eglinton Crosstown LRT</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"orange"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Eglinton Crosstown West Extension</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"orange"</span>, <span class="st">`</span><span class="at">Hazel McCallion Line</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Finch West LRT</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"blue"</span>, <span class="st">`</span><span class="at">Ontario Line</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"plum3"</span>, <span class="st">`</span><span class="at">Yonge North Subway Extension</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"yellow"</span>,</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">ION Kitchener-Waterloo LRT (Stage 1)</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"royalblue2"</span>, <span class="st">`</span><span class="at">Hamilton B-Line LRT</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"mediumturquoise"</span>,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">Sheppard East Subway Extension</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"purple"</span>, <span class="st">`</span><span class="at">Scarborough Subway Extension</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"green"</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">UP Express</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"brown"</span>, <span class="st">`</span><span class="at">Eglinton Crosstown West Extension - Airport Segment</span><span class="st">`</span> <span class="ot">=</span> <span class="st">"orange"</span>)) <span class="sc">+</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_rect</span>(<span class="at">fill =</span> <span class="st">"gray20"</span>), <span class="at">plot.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_blank</span>(), <span class="at">plot.subtitle =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption =</span> <span class="fu">element_blank</span>(), <span class="at">legend.position =</span> <span class="st">"none"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>        ) <span class="sc">+</span> <span class="fu">geom_sf</span>(<span class="at">data =</span> point_sf_rapid, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(), <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(core_toronto_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="test-page_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

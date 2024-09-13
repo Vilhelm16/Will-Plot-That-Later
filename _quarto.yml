@@ -4,17 +4,20 @@ project:
 
 website:
   title: "Will Plot That Later"
-  navbar:
-    left:
+  sidebar:
+    style: docked
+    contents:
       - href: index.qmd
         text: Home
       - about.qmd
+      - test page.qmd
 
 format:
   html:
     theme: lux
     css: styles.css
     toc: true
+    page-layout: article
 
 
 

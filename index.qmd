@@ -1,25 +1,14 @@
 ---
 title: "Will Plot That Later"
-
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+listing:
+  type: grid
 ---
 
 
 
-Welcome! I'm Will. I'll plot that later.
-
-```{r}
-1 + 1
 
 
-a <- c(1, 2, 3)
-
-b <- c(2, 4, 6)
-
-df <- data.frame(a, b)
-
-library(ggplot2)
-
-ggplot(df, aes(x = a, y = b)) + geom_point() + geom_line()
-
-
-```
