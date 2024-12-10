@@ -21,7 +21,7 @@
     "href": "index.html",
     "title": "Will Plot That Later",
     "section": "",
-    "text": "Article I have written appear below:\n\n\n\n\n\n\n\n\n\n\n\n\nAbout\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMapping Metrolinx’s Shapfiles to Create a New Transit Map\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items",
+    "text": "Article I have written appear below:\n\n\n\n\n\n\n\n\n\n\n\n\nAbout Me\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMapping Metrolinx’s Shapfiles to Create a New Transit Map\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items",
     "crumbs": [
       "Home"
     ]
@@ -31,9 +31,19 @@
     "href": "about me.html",
     "title": "About Me",
     "section": "",
-    "text": "Welcome! I’m Will, a policy analyst who has an unhealthy love for data and R. This website is a place for me to put some of my personal projects and to provide explanations for how do my analysis.\nSoli Deo Gloria",
+    "text": "Welcome! I’m Will, a policy analyst who has an unhealthy love for data and R. This website is a place for me to put some of my personal projects and to provide explanations for how do my analysis.",
     "crumbs": [
       "About Me"
+    ]
+  },
+  {
+    "objectID": "municipal finance.html",
+    "href": "municipal finance.html",
+    "title": "Municipal Finance: Revenue share over time",
+    "section": "",
+    "text": "I recently needed to make this graph for something, so I’m putting it on here as well. Unfortunately, it isn’t very replicable, because I manually edited which statistics canada data I wanted from the website instead of downloading it and then modifying it here or using a package to grab the code directly.\nMaybe one day I’ll fix that. I want to do a more extensive summary look at Canadian municipal finances at some point, but this is it for now.\n\n\nCode\nlibrary(dplyr)\nlibrary(ggplot2)\nlibrary(lubridate)\nlibrary(tidyr)\n\nrevenue_df &lt;- read.csv(\"C:/Users/willi/Downloads/3610047701_databaseLoadingData.csv\")\n\nmain_data &lt;- revenue_df %&gt;%\n  filter(Levels.of.government %in% c(\"General governments\", \"Federal general government\", \"Provincial and territorial general governments\", \"Local general governments\")) %&gt;%\n  select(REF_DATE, Levels.of.government, Estimates, VALUE)\n\nrevenue_data &lt;- main_data %&gt;%\n  filter(Estimates == \"General governments revenue\")\n\ngeneral_revenue_data &lt;- revenue_data %&gt;%\n  filter(Levels.of.government == \"General governments\")\n\nlocal_revenue_data &lt;- revenue_data %&gt;%\n  filter(Levels.of.government == \"Local general governments\")\n\nprovincial_revenue_data &lt;- revenue_data %&gt;%\n  filter(Levels.of.government == \"Provincial and territorial general governments\")\n\nfederal_revenue_data &lt;- revenue_data %&gt;%\n  filter(Levels.of.government == \"Federal general government\")\n\n\n\nwide_revenue_data &lt;- revenue_data %&gt;%\n  pivot_wider(\n    names_from = Levels.of.government, \n    values_from = VALUE,\n    names_prefix = \"Revenue_\"\n  )\n\n\npercentage_revenue_data &lt;- wide_revenue_data %&gt;%\n  mutate(across(starts_with(\"Revenue_\"), \n                ~ (. / `Revenue_General governments`) * 100, \n                .names = \"Percent_{.col}\")) %&gt;%\n  select(REF_DATE, starts_with(\"Percent_\"))\n\nlong_revenue_data &lt;- percentage_revenue_data %&gt;%\n  pivot_longer(\n    cols = starts_with(\"Percent_\"),\n    names_to = \"Government_Level\",\n    values_to = \"Percentage\"\n  ) %&gt;%\n  mutate(Government_Level = gsub(\"Percent_Revenue_\", \"\", Government_Level))\n\n\npercentage_revenue_data &lt;- percentage_revenue_data %&gt;%\n  mutate(REF_DATE = as.Date(paste0(REF_DATE, \"-01\"), format = \"%Y-%m-%d\")) # Add a day and convert to Date\n\nggplot(data = percentage_revenue_data, aes(x = REF_DATE, y = `Percent_Revenue_Local general governments`)) +\n  geom_point() +\n  scale_x_date(\n    date_breaks = \"5 years\", # Display a tick every 5 years\n    date_labels = \"%Y\"       # Display only the year on the x-axis\n  ) +\n  labs(\n    title = \"Local Government Revenue as a Percentage of General Government Revenue\",\n    x = \"Year\",\n    y = \"Percentage of Revenue\"\n  ) +\n  theme_minimal()",
+    "crumbs": [
+      "Municipal Finance: Revenue share over time"
     ]
   }
 ]

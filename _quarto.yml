@@ -11,6 +11,7 @@ website:
         text: Home
       - about me.qmd
       - test page.qmd
+      - municipal finance.qmd
 
 format:
   html:

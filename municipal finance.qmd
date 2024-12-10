@@ -1,0 +1,85 @@
+---
+title: "Municipal Finance: Revenue share over time"
+format:
+  html:
+    code-fold: true
+    code-summary: "Code"
+---
+
+```{r, global_options, include=FALSE}
+knitr::opts_chunk$set(tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+I recently needed to make this graph for something, so I'm putting it on here as well. Unfortunately, it isn't very replicable, because I manually edited which statistics canada data I wanted from the website instead of downloading it and then modifying it here or using a package to grab the code directly. 
+
+Maybe one day I'll fix that. I want to do a more extensive summary look at Canadian municipal finances at some point, but this is it for now.
+
+```{r, message=FALSE, warning=FALSE}
+library(dplyr)
+library(ggplot2)
+library(lubridate)
+library(tidyr)
+
+revenue_df <- read.csv("C:/Users/willi/Downloads/3610047701_databaseLoadingData.csv")
+
+main_data <- revenue_df %>%
+  filter(Levels.of.government %in% c("General governments", "Federal general government", "Provincial and territorial general governments", "Local general governments")) %>%
+  select(REF_DATE, Levels.of.government, Estimates, VALUE)
+
+revenue_data <- main_data %>%
+  filter(Estimates == "General governments revenue")
+
+general_revenue_data <- revenue_data %>%
+  filter(Levels.of.government == "General governments")
+
+local_revenue_data <- revenue_data %>%
+  filter(Levels.of.government == "Local general governments")
+
+provincial_revenue_data <- revenue_data %>%
+  filter(Levels.of.government == "Provincial and territorial general governments")
+
+federal_revenue_data <- revenue_data %>%
+  filter(Levels.of.government == "Federal general government")
+
+
+
+wide_revenue_data <- revenue_data %>%
+  pivot_wider(
+    names_from = Levels.of.government, 
+    values_from = VALUE,
+    names_prefix = "Revenue_"
+  )
+
+
+percentage_revenue_data <- wide_revenue_data %>%
+  mutate(across(starts_with("Revenue_"), 
+                ~ (. / `Revenue_General governments`) * 100, 
+                .names = "Percent_{.col}")) %>%
+  select(REF_DATE, starts_with("Percent_"))
+
+long_revenue_data <- percentage_revenue_data %>%
+  pivot_longer(
+    cols = starts_with("Percent_"),
+    names_to = "Government_Level",
+    values_to = "Percentage"
+  ) %>%
+  mutate(Government_Level = gsub("Percent_Revenue_", "", Government_Level))
+
+
+percentage_revenue_data <- percentage_revenue_data %>%
+  mutate(REF_DATE = as.Date(paste0(REF_DATE, "-01"), format = "%Y-%m-%d")) # Add a day and convert to Date
+
+ggplot(data = percentage_revenue_data, aes(x = REF_DATE, y = `Percent_Revenue_Local general governments`)) +
+  geom_point() +
+  scale_x_date(
+    date_breaks = "5 years", # Display a tick every 5 years
+    date_labels = "%Y"       # Display only the year on the x-axis
+  ) +
+  labs(
+    title = "Local Government Revenue as a Percentage of General Government Revenue",
+    x = "Year",
+    y = "Percentage of Revenue"
+  ) +
+  theme_minimal()
+
+```
